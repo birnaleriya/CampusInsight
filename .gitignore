@@ -1,0 +1,38 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Flask & Python-specific
+instance/
+*.db
+*.sqlite3
+*.log
+*.pid
+
+# Environment variable files
+.env
+*.env
+
+# MySQL dump files (optional)
+*.sql
+
+# Editor/IDE settings
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# PyInstaller
+dist/
+build/
+*.spec
