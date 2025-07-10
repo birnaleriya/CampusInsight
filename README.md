@@ -25,7 +25,6 @@ This is a simple Flask web application that allows users to submit and view revi
 
 ---
 
----
 
 ## 🧑‍💻 Setup Instructions
 
