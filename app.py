@@ -45,3 +45,7 @@ def home():
     conn.close()
 
     return render_template('home.html', reviews=reviews)
+# ... all your route definitions above ...
+
+if __name__ == '__main__':
+    app.run(debug=True)
