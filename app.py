@@ -50,5 +50,9 @@ def reviews():
     conn.close()
     return render_template('reviews.html', reviews=reviews)
 
+@app.route('/')
+def home():
+    return redirect('/add_review')
+
 if __name__ == '__main__':
     app.run(debug=True)
