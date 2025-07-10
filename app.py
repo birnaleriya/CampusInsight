@@ -15,44 +15,33 @@ def get_db_connection():
         password=Config.DB_PASSWORD,
         database=Config.DB_NAME
     )
-@app.route('/add_review', methods=['GET', 'POST'])
-def add_review():
+
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
     if request.method == 'POST':
+        # Handle Add Review form submission
         school_name = request.form['school_name']
         reviewer_name = request.form['reviewer_name']
         rating = request.form['rating']
         comment = request.form['comment']
 
         if not (school_name and reviewer_name and rating and comment):
-            flash('All fields are required')
-            return redirect(url_for('add_review'))
-        
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO reviews (school_name, reviewer_name, rating, comment) VALUES (%s, %s, %s, %s)",
-            (school_name, reviewer_name, rating, comment)
-        )
-        conn.commit()
-        cursor.close()
-        conn.close()
+            flash('All fields are required', 'error')
+        else:
+            cursor.execute(
+                "INSERT INTO reviews (school_name, reviewer_name, rating, comment) VALUES (%s, %s, %s, %s)",
+                (school_name, reviewer_name, rating, comment)
+            )
+            conn.commit()
+            flash('Review submitted successfully', 'success')
 
-        flash('Review submitted successfully')
-        return redirect(url_for('reviews'))
-    return render_template('add_review.html')
-
-@app.route('/reviews')
-def reviews():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    # Always fetch latest reviews to show on the page
+    cursor.execute("SELECT * FROM reviews ORDER BY id DESC")
     reviews = cursor.fetchall()
     cursor.close()
     conn.close()
-    return render_template('reviews.html', reviews=reviews)
 
-@app.route('/')
-def home():
-    return redirect('/add_review')
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    return render_template('home.html', reviews=reviews)
